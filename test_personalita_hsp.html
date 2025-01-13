@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test di Personalità HSP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #4A90E2;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            font-size: 2em;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        .question {
+            background-color: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            background-color: #4A90E2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #357ABD;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #dff0d8;
+            border: 1px solid #d6e9c6;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Scopri il Tuo Profilo di Personalità HSP
+    </header>
+
+    <div class="container">
+        <div id="quiz"></div>
+        <button onclick="calculateResult()">Scopri il Risultato</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const questions = [
+            "Le emozioni degli altri mi influenzano profondamente.",
+            "Mi sento sopraffatto/a da ambienti rumorosi o caotici.",
+            "Difendo le mie opinioni, anche se sono impopolari.",
+            "Mi sento sicuro/a delle mie capacità nella maggior parte delle situazioni.",
+            "Anche se mi sento sopraffatto/a, riesco comunque a portare a termine i miei compiti."
+        ];
+
+        const quizContainer = document.getElementById("quiz");
+
+        questions.forEach((question, index) => {
+            quizContainer.innerHTML += `
+                <div class="question">
+                    <p>${index + 1}. ${question}</p>
+                    <label><input type="radio" name="q${index}" value="true"> Vero</label>
+                    <label><input type="radio" name="q${index}" value="false"> Falso</label>
+                </div>
+            `;
+        });
+
+        function calculateResult() {
+            let scoreHSP = 0;
+            let scoreFP = 0;
+
+            for (let i = 0; i < questions.length; i++) {
+                const answer = document.querySelector(`input[name="q${i}"]:checked`);
+                if (answer) {
+                    if (i < 2 && answer.value === "true") scoreHSP++;
+                    if (i >= 2 && i < 4 && answer.value === "true") scoreFP++;
+                    if (i === 4 && answer.value === "true") {
+                        scoreHSP++;
+                        scoreFP++;
+                    }
+                }
+            }
+
+            let resultText = "";
+
+            if (scoreHSP >= 2 && scoreFP >= 2) {
+                resultText = "Hai un'elevata sensibilità combinata con una forte personalità. Sei empatico/a ma anche determinato/a.";
+            } else if (scoreHSP >= 2) {
+                resultText = "Hai un'elevata sensibilità. Sei molto empatico/a e attento/a ai dettagli emotivi.";
+            } else if (scoreFP >= 2) {
+                resultText = "Hai una forte personalità. Sei sicuro/a di te e affronti le sfide con determinazione.";
+            } else {
+                resultText = "Hai una personalità equilibrata. Ti adatti bene alle situazioni senza estremi di sensibilità o assertività.";
+            }
+
+            document.getElementById("result").innerText = resultText;
+        }
+    </script>
+</body>
+</html>
